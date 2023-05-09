@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: giorg
+Build-Jdk: 17.0.6
+Implementation-Title: siw-spring-03
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: it.uniroma3.siw
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/siw-spring-03
+Created-By: Maven Integration for Eclipse
+
