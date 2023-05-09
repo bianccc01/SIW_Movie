@@ -101,6 +101,15 @@ public class MovieController {
 		return "admin/manageMovies.html";
 	}
 	
+	@GetMapping("/admin/delMovieImage/{id}")
+	public String delMovieImage(@PathVariable("id") Long id, Model model) {
+		
+		this.imageRepository.delete(this.imageRepository.findById(id).get());
+		model.addAttribute("movies", this.movieRepository.findAll());
+	    
+		return "admin/manageMovies.html";
+	}
+	
 	@PostMapping("/admin/movie")
 	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, 
 	                        @RequestParam("file") MultipartFile[] files, Model model) throws IOException {

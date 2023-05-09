@@ -23,11 +23,9 @@
 	<ul>
 		<li th:each="movie : ${movies}">
 			<span th:text="${movie.title} + ' (' + ${movie.year} + ')'">Up! (2000)</span>
-			<a th:href="@{'/admin/formUpdateMovie' + '/' + ${movie.id}}">Aggiorna</a>
+			<a th:href="@{'/admin/formUpdateMovie' + '/' + ${movie.id}}">Modifica</a>
 			
-			 </div>
-			<a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}" ><button type="button">Elimina Film</button></span></a>
-		</div>
+			
 		
 		</li>
 	</ul>

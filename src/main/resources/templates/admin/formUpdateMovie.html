@@ -38,11 +38,20 @@
 		<div>
 			<span>Attori: </span>
 			<div th:each="actor: ${movie.actors}">
-				<span th:text="${actor.name} + ' ' + ${actor.surname}">Al Pacino</span>
+				<span th:text="${actor.name} + ' ' + ${actor.surname}"></span>
 			</div>
 			<a th:href="@{'/admin/updateActors/' + ${movie.id}}">
 				<button type="button">Modifica</button>
 			</a>
+			
+		<div th:each="image : ${movie.images}">
+    		<img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
+    		<a th:href="@{'/admin/delMovieImage' + '/' + ${image.id}}" ><button type="button">Elimina Immagine</button></span></a>
+			</div>
+			
+			 </div>
+			<a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}" ><button type="button">Elimina Film</button></span></a>
+		</div>
 		</div>
 		<div th:unless="${movie}">Film non esistente</div>
 </body>
