@@ -21,8 +21,17 @@
 	<h1>Artisti</h1>
 	<div th:if="${artists==null || artists.isEmpty()}">Non ci sono artisti nel sistema</div>
 	<ul>
+		
+		<form th:action="@{/guest/searchArtistName}" method="post">
+			<div>Cerca: <input type="text" th:value="${title}" name="title" />
+			<input type="submit" />
+			</div>
+		</form>
+		
+		<div style='margin-top:50px;'/>
+		
 		<li th:each="artist : ${artists}">
-			<a th:href="@{'/artist' + '/' + ${artist.id}}"
+			<a th:href="@{'/guest/artist' + '/' + ${artist.id}}"
 				th:text="${artist.name} + ' ' + ${artist.surname}"></a>
 		</li>
 	</ul>

@@ -1,10 +1,16 @@
 package it.uniroma3.siw.controller;
 
 import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.controller.validator.ArtistValidator;
 import it.uniroma3.siw.model.Artist;
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Image;
-import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.ImageRepository;
+import it.uniroma3.siw.service.CredentialsService;
 
 @Controller
 public class ArtistController {
@@ -30,9 +37,12 @@ public class ArtistController {
 
 	@Autowired
 	private ArtistValidator artistValidator;
-	
+
 	@Autowired
 	private ImageRepository imageRepository;
+
+	@Autowired 
+	private CredentialsService credentialsService;
 
 	@GetMapping(value="/admin/formNewArtist")
 	public String formNewArtist(Model model) {
@@ -64,11 +74,23 @@ public class ArtistController {
 			this.artistRepository.save(artist); 
 			this.imageRepository.save(image);
 			model.addAttribute("artist", artist);
-			
+
 			return "guest/artist.html";
 		} else {
 			return "admin/formNewArtist.html"; 
 		}
+	}
+	
+	@PostMapping("/guest/searchArtistName")
+	public String searchMoviesName(Model model, @RequestParam String title) {
+		
+		List<Artist> artists = new ArrayList<>();
+		artists.addAll(this.artistRepository.findByNameContainingIgnoreCase(title));
+		artists.addAll(this.artistRepository.findBySurnameContainingIgnoreCase(title));
+		List<Artist> uniqueArtists = artists.stream().distinct().collect(Collectors.toList());
+		model.addAttribute("artists", uniqueArtists);
+
+		return "guest/artists.html";
 	}
 
 	@GetMapping("/guest/artist/{id}")
@@ -79,7 +101,24 @@ public class ArtistController {
 
 	@GetMapping("/guest/artist")
 	public String getArtists(Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		if (authentication instanceof AnonymousAuthenticationToken) {
+			model.addAttribute("user", null);
+		}
+
+		else {
+
+			UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+
+
+			model.addAttribute("user", credentials.getUser());
+		}
+
 		model.addAttribute("artists", this.artistRepository.findAll());
+		
 		return "guest/artists.html";
 	}
 }

@@ -23,6 +23,7 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
 	
 	
 	public List<Artist> findByNameContainingIgnoreCase(String name);
+	public List<Artist> findBySurnameContainingIgnoreCase(String name);
 
 
 }

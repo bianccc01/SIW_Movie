@@ -168,8 +168,11 @@ public class MovieController {
 		}
 		
 		model.addAttribute("movies", this.movieRepository.findAll());
+		
 		return "guest/movies.html";
 	}
+	
+	
 	
 	@GetMapping("/guest/formSearchMovies")
 	public String formSearchMovies() {
