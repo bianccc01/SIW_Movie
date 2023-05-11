@@ -31,6 +31,9 @@ public class Artist {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfDeath;
 	
+	@OneToOne(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
+	 private Image image;
+	
 	
 	@ManyToMany(mappedBy="actors")
 	private Set<Movie> starredMovies;
@@ -115,5 +118,18 @@ public class Artist {
 		Artist other = (Artist) obj;
 		return Objects.equals(name, other.name) && Objects.equals(surname, other.surname);
 	}
+	
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public void addImage(Image image) {
+        this.image = image;
+        image.setArtist(this);
+    }
 
 }

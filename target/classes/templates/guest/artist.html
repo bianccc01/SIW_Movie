@@ -21,7 +21,9 @@
     <div th:if="${artist}">
         <span th:text="${artist.name} + ' ' + ${artist.surname}">Dino Risi</span>
         <span th:text="'(' + ${artist.dateOfBirth} + ')'">20/20/2000</span>
-        <span><img width="5%" th:src=${artist.urlOfPicture} /></span>
+        
+        <div img th:src="@{'data:image/png;base64,' + ${artist.image.base64Image}}" style="width: 300px"/></div>
+    
     </div>
     <div th:unless="${artist}">Non esiste</div>
   </body>

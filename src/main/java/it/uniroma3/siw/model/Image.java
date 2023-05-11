@@ -1,6 +1,8 @@
 package it.uniroma3.siw.model;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
@@ -17,9 +19,11 @@ public class Image {
 	   @Lob
 	   private byte[] bytes;
 	   
-	   
 	   @Lob
 	   private String base64Image;
+	   
+	   @OneToOne
+	   private Artist artist;
 	   
 	   @ManyToOne
 	   private Movie movie;
@@ -58,11 +62,24 @@ public class Image {
 	
 	@Transactional
 	public String getBase64Image() {
-		return base64Image;
+		return Base64.getEncoder().encodeToString(this.bytes);
 	}
 	
 	public void setBase64Image(String base64Image) {
 		this.base64Image = base64Image;
+	}
+	
+	@Transactional
+	public String getDataImage() {
+		return Base64.getEncoder().encodeToString(this.bytes);
+	}
+
+	public Artist getArtist() {
+		return artist;
+	}
+
+	public void setArtist(Artist artist) {
+		this.artist = artist;
 	}
 	   
 	   

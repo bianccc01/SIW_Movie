@@ -21,6 +21,13 @@
 	<h1>Film</h1>
 	<div th:if="${movies==null || movies.isEmpty()}">Non ci sono film nel sistema</div>
 	<ul>
+		<form th:action="@{/guest/searchMoviesName}" method="post">
+		<div>Cerca per nome: <input type="text" th:value="${title}" name="title" />
+		</div>
+		
+		<div><input type="submit" /></div>
+		</form>
+		
 		<li th:each="movie : ${movies}">
 			<a th:href="@{'/guest/movie' + '/' + ${movie.id}}"
 				th:text="${movie.title} + ' (' + ${movie.year} + ')'"></a>

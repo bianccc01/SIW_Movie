@@ -21,7 +21,7 @@
 
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
 	<h1>Aggiungi un artista</h1>
-	<form th:action="@{/admin/artist}" method="POST" th:object="${artist}">
+	<form th:action="@{/admin/artist}" method="POST" th:object="${artist}" enctype="multipart/form-data">
 		
 		<div th:if="${#fields.hasGlobalErrors()}">
   			<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
@@ -49,6 +49,12 @@
 		<div>
 			<label>Data di morte:</label> <span><input type="date" th:field="${artist.dateOfDeath}" /></span>
 		</div>
+		
+		<div>
+        <label>Immagine:</label>
+         <input type="file" th:name="file" />
+        </span>
+    </div>
 		
 		<div>
 			<span><button type="submit">Conferma</button></span>

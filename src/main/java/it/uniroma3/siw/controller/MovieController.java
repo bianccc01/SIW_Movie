@@ -129,13 +129,6 @@ public class MovieController {
 		        movie.addImage(image);
 		    }
 			
-			for (Image image : movie.getImages()) {
-			    String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
-			    image.setBase64Image(base64Image);
-			}
-
-			
-			
 			this.movieRepository.save(movie); 
 			this.imageRepository.saveAll(movie.getImages());
 			
@@ -187,6 +180,13 @@ public class MovieController {
 	public String searchMovies(Model model, @RequestParam int year) {
 		model.addAttribute("movies", this.movieRepository.findByYear(year));
 		return "guest/foundMovies.html";
+	}
+	
+	
+	@PostMapping("/guest/searchMoviesName")
+	public String searchMoviesName(Model model, @RequestParam String title) {
+		model.addAttribute("movies", this.movieRepository.findByTitleContainingIgnoreCase(title));
+		return "guest/movies.html";
 	}
 	
 	@GetMapping("/admin/updateActors/{id}")
