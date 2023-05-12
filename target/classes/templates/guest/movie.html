@@ -22,9 +22,12 @@
         <span th:text="${movie.title}">Up!</span>
         <span th:text="'(' + ${movie.year} + ')'">2000</span>
         
-     <div th:each="image : ${movie.images}">
-    <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
-	</div>
+  <div>
+     <span th:each="image : ${movie.images}">
+  	<img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
+	</span> 
+</div>
+
 
 
 </div>

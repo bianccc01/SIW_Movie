@@ -53,6 +53,17 @@
 			<a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}" ><button type="button">Elimina Film</button></span></a>
 		</div>
 		</div>
+		
+		<form th:action="@{/admin/addImageMovie/} + ${movie.id}" method="POST" enctype="multipart/form-data">
+  			<div>
+    			<label for="file">Aggiungi immagini:</label>
+    			<input type="file" id="file" name="file" multiple="multiple" />
+    			<button type="submit">Carica</button>
+  			</div>
+		</form>
+
+		
+		
 		<div th:unless="${movie}">Film non esistente</div>
 </body>
 

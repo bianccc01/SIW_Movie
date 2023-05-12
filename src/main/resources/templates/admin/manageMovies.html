@@ -22,7 +22,7 @@
 	<div th:if="${movies.isEmpty()}">Non ci sono film nel sistema</div>
 	<ul>
 		<li th:each="movie : ${movies}">
-			<span th:text="${movie.title} + ' (' + ${movie.year} + ')'">Up! (2000)</span>
+			<span th:text="${movie.title} + ' (' + ${movie.year} + ')'"></span>
 			<a th:href="@{'/admin/formUpdateMovie' + '/' + ${movie.id}}">Modifica</a>
 			
 			

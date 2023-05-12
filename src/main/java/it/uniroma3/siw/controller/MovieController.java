@@ -29,6 +29,7 @@ import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.ImageRepository;
 import it.uniroma3.siw.repository.MovieRepository;
 import it.uniroma3.siw.service.CredentialsService;
+import it.uniroma3.siw.service.MovieService;
 
 @Controller
 public class MovieController {
@@ -43,6 +44,9 @@ public class MovieController {
 	
 	@Autowired 
 	private CredentialsService credentialsService;
+	
+	@Autowired
+	private MovieService movieService;
 	
 	@Autowired
 	private ImageRepository imageRepository;
@@ -110,25 +114,32 @@ public class MovieController {
 		return "admin/manageMovies.html";
 	}
 	
+	
+	@PostMapping("/admin/addImageMovie/{id}")
+	public String addImageMovie(@PathVariable("id") Long id, @RequestParam("file") MultipartFile[] files, Model model) throws IOException {
+		
+		Movie movie = this.movieRepository.findById(id).get();
+		
+		this.imageRepository.deleteAll(movie.getImages());
+		this.movieService.newImagesMovie(files, movie);
+		this.imageRepository.saveAll(movie.getImages());
+		
+		model.addAttribute("movie",movie);
+	    
+		return "admin/formUpdateMovie.html";
+	}
+	
+
+	
 	@PostMapping("/admin/movie")
 	public String newMovie(@Valid @ModelAttribute("movie") Movie movie, BindingResult bindingResult, 
 	                        @RequestParam("file") MultipartFile[] files, Model model) throws IOException {
 		
 		this.movieValidator.validate(movie, bindingResult);
+		
 		if (!bindingResult.hasErrors()) {
-				
-			for (MultipartFile file : files) {
-		        byte[] imageData = file.getBytes();
-		        String imageName = file.getOriginalFilename();
-		        
-		        Image image = new Image();
-		        image.setName(imageName);
-		        image.setBytes(imageData);
-		        
-		        
-		        movie.addImage(image);
-		    }
 			
+			this.movieService.newImagesMovie(files, movie);
 			this.movieRepository.save(movie); 
 			this.imageRepository.saveAll(movie.getImages());
 			
@@ -195,7 +206,7 @@ public class MovieController {
 	@GetMapping("/admin/updateActors/{id}")
 	public String updateActors(@PathVariable("id") Long id, Model model) {
 
-		List<Artist> actorsToAdd = this.actorsToAdd(id);
+		List<Artist> actorsToAdd = this.movieService.actorsToAdd(id);
 		model.addAttribute("actorsToAdd", actorsToAdd);
 		model.addAttribute("movie", this.movieRepository.findById(id).get());
 
@@ -210,7 +221,7 @@ public class MovieController {
 		actors.add(actor);
 		this.movieRepository.save(movie);
 		
-		List<Artist> actorsToAdd = actorsToAdd(movieId);
+		List<Artist> actorsToAdd = this.movieService.actorsToAdd(movieId);
 		
 		model.addAttribute("movie", movie);
 		model.addAttribute("actorsToAdd", actorsToAdd);
@@ -226,7 +237,7 @@ public class MovieController {
 		actors.remove(actor);
 		this.movieRepository.save(movie);
 
-		List<Artist> actorsToAdd = actorsToAdd(movieId);
+		List<Artist> actorsToAdd = this.movieService.actorsToAdd(movieId);
 		
 		model.addAttribute("movie", movie);
 		model.addAttribute("actorsToAdd", actorsToAdd);
@@ -234,12 +245,5 @@ public class MovieController {
 		return "admin/actorsToAdd.html";
 	}
 
-	private List<Artist> actorsToAdd(Long movieId) {
-		List<Artist> actorsToAdd = new ArrayList<>();
-
-		for (Artist a : artistRepository.findActorsNotInMovie(movieId)) {
-			actorsToAdd.add(a);
-		}
-		return actorsToAdd;
-	}
+	
 }
