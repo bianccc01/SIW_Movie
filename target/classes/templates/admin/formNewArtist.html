@@ -1,65 +1,76 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-	<title>
-		New Artist
-	</title>
-	<link rel="stylesheet" href="/css/stile.css" />
+    <title>Update Movie</title>
+    <link rel="stylesheet" href="/css/stile.css"/>
 </head>
-
 <body>
-	<header>
-		<div th:if="${#request.userPrincipal}">
-			<span th:text="${#request.userPrincipal.principal.username}"></span>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="#">Operazioni Artisti</a>
+                <ul>
+                    <li>
+                        <div th:if="${movie.director}">
+                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
+                        </div>
+                        <div th:unless="${movie.director}">
+                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a th:href="@{'/admin/updateActors/' + ${movie.id}}"> Modifica Attori</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Operazioni film</a>
+            </li>
+            <li>
+                <div th:if="${#request.userPrincipal}">
 			<a href="/logout">Logout</a>
 		</div>
+		
 		<div th:unless="${#request.userPrincipal}">
 			<a href="/login">Login</a>
 		</div>
-	</header>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="siwimage">
+    <a href="/">
+        <img src="/images/logo-siw.png" width="50%"/>
+    </a>
+</div>
 
-	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
-	<h1>Aggiungi un artista</h1>
-	<form th:action="@{/admin/artist}" method="POST" th:object="${artist}" enctype="multipart/form-data">
-		
-		<div th:if="${#fields.hasGlobalErrors()}">
-  			<p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
-  		</div>
-		
-		<div>
-			<label>Nome:</label> 
-			<span><input type="text" th:field="${artist.name}" /></span>
-			<span class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
-		    </span>
-		</div>
-
-		<div>
-			<label>Cognome:</label> <span><input type="text" th:field="${artist.surname}" /></span>
-			<span class="error-message" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
-		    </span>
-		</div>
-
-		<div>
-			<label>Data di nascita:</label> <span><input type="date" th:field="${artist.dateOfBirth}" /></span>
-			<span class="error-message" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
-		    </span>
-		</div>
-
-		<div>
-			<label>Data di morte:</label> <span><input type="date" th:field="${artist.dateOfDeath}" /></span>
-		</div>
-		
-		<div>
-        <label>Immagine:</label>
-         <input type="file" th:name="file" />
-        </span>
+ <div>
+<h1>Aggiorna film</h1>
+<div th:if="${movie}">
+    <div>
+        <span th:text="${movie.title}">Titolo Film</span>
+        <span th:text="'(' + ${movie.year} + ')'">(Anno)</span>
     </div>
-		
-		<div>
-			<span><button type="submit">Conferma</button></span>
-		</div>
-	</form>
-</body>
-
-</html>
+    <div th:if="${movie.director}">
+        <span>Regista: </span>
+        <span th:text="${movie.director.name} + ' ' + ${movie.director.surname}">Steven Spielberg</span>
+        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
+    </div>
+    <div th:unless="${movie.director}">
+        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
+    </div>
+    <div>
+        <span>Attori: </span>
+        <div th:each="actor: ${movie.actors}">
+            <span th:text="${actor.name} + ' ' + ${actor.surname}"></span>
+        </div>
+        <a th:href="@{'/admin/updateActors/' + ${movie.id}}">
+            <button type="button">Modifica</button>
+        </a>
+        <div th:each="image : ${movie.images}">
+            <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
+            <a th:href="@{'/admin/delMovieImage'

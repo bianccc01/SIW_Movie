@@ -1,70 +1,100 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<title>
-		New Movie
+    <head>
+        <title>
+		Update Movie
 	</title>
-	<link rel="stylesheet" href="/css/stile.css" />
-</head>
-
-<body>
-	<header>
-		<div th:if="${#request.userPrincipal}">
+        <link rel="stylesheet" href="/css/stile.css"/>
+    </head>
+    <body>
+        <header>
+            <nav>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="#">Operazioni Artisti</a>
+                <ul>
+                    <li>
+                        <div th:if="${movie.director}">
+                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
+                        </div>
+                        <div th:unless="${movie.director}">
+                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a th:href="@{'/admin/updateActors/' + ${movie.id}}"> Modifica Attori</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Operazioni film</a>
+            </li>
+            <li class = "login">
+                <div th:if="${#request.userPrincipal}">
 			<span th:text="${#request.userPrincipal.principal.username}"></span>
 			<a href="/logout">Logout</a>
 		</div>
 		<div th:unless="${#request.userPrincipal}">
 			<a href="/login">Login</a>
 		</div>
-	</header>
-
-	<div><a href="/"><img src="/images/logo-siw.png" width="50%" /></a></div>
-	<h1>Aggiorna film</h1>
-	<div th:if="${movie}">
-		<div>
-			<span th:text="${movie.title}">Up!</span>
-			<span th:text="'(' + ${movie.year} + ')'">2000</span>
-		</div>
-		<div th:if="${movie.director}">
-			<span>Regista: </span><span th:text="${movie.director.name} + ' ' + ${movie.director.surname}">Steven
+            </li>
+        </ul>
+    </nav>
+                    </header>
+                    <div>
+                        <a href="/">
+                            <img src="/images/logo-siw.png" width="50%"/>
+                        </a>
+                    </div>
+                    
+                  <h1>Aggiorna film</h1>
+                    <div th:if="${movie}">
+                        <div>
+                            <span th:text="${movie.title}">Titolo Film</span>
+                            <span th:text="'(' + ${movie.year} + ')'">(Anno)</span>
+                        </div>
+                        <div th:if="${movie.director}">
+                            <span>Regista: </span>
+                            <span th:text="${movie.director.name} + ' ' + ${movie.director.surname}">Steven
 				Spielberg</span>
-			<a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a></span>
-		</div>
-		<div th:unless="${movie.director}">
-			<a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
-		</div>
-
-		<div>
-			<span>Attori: </span>
-			<div th:each="actor: ${movie.actors}">
-				<span th:text="${actor.name} + ' ' + ${actor.surname}"></span>
-			</div>
-			<a th:href="@{'/admin/updateActors/' + ${movie.id}}">
-				<button type="button">Modifica</button>
-			</a>
-			
-		<div th:each="image : ${movie.images}">
-    		<img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
-    		<a th:href="@{'/admin/delMovieImage' + '/' + ${image.id}}" ><button type="button">Elimina Immagine</button></span></a>
-			</div>
-			
-			 </div>
-			<a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}" ><button type="button">Elimina Film</button></span></a>
-		</div>
-		</div>
-		
-		<form th:action="@{/admin/addImageMovie/} + ${movie.id}" method="POST" enctype="multipart/form-data">
-  			<div>
-    			<label for="file">Aggiungi immagini:</label>
-    			<input type="file" id="file" name="file" multiple="multiple" />
-    			<button type="submit">Carica</button>
-  			</div>
-		</form>
-
-		
-		
-		<div th:unless="${movie}">Film non esistente</div>
+                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
+                        </span>
+                    </div>
+                    <div th:unless="${movie.director}">
+                        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
+                    </div>
+                    <div>
+                        <span>Attori: </span>
+                        <div th:each="actor: ${movie.actors}">
+                            <span th:text="${actor.name} + ' ' + ${actor.surname}"/>
+                        </div>
+                        <a th:href="@{'/admin/updateActors/' + ${movie.id}}">
+                            <button type="button">Modifica</button>
+                        </a>
+                        <div th:each="image : ${movie.images}">
+                            <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
+                            <a th:href="@{'/admin/delMovieImage' + '/' + ${image.id} + '/' + ${movie.id}}">
+                                <button type="button">Elimina Immagine</button>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}">
+                    <button type="button">Elimina Film</button>
+                </span>
+            </a>
+        </div>
+    </div>
+    <form th:action="@{/admin/addImageMovie/} + ${movie.id}" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="file">Aggiungi immagini:</label>
+            <input type="file" id="file" name="file" multiple="multiple"/>
+            <button type="submit">Carica</button>
+        </div>
+    </form>
+    <div th:unless="${movie}">Film non esistente</div>
 </body>
-
 </html>

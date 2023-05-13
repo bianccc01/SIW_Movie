@@ -11,8 +11,8 @@
 <body>
 	<header>
 		<div th:if="${#request.userPrincipal}">
-			<span th:text="${#request.userPrincipal.principal.username}"></span>
-			<a href="/logout">Logout</a>
+    		<span th:text="'Bentornato ' + ${#request.userPrincipal.principal.username}"></span>
+    		<a href="/logout">Logout</a>
 		</div>
 		<div th:unless="${#request.userPrincipal}">
 			<a href="/login">Login</a>

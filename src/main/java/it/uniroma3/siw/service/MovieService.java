@@ -13,21 +13,13 @@ import it.uniroma3.siw.model.Artist;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.model.Movie;
 import it.uniroma3.siw.repository.ArtistRepository;
+import it.uniroma3.siw.repository.ImageRepository;
 
 @Service
 public class MovieService {
 	
-	@Autowired
-	private ArtistRepository artistRepository;
+
 	
-	@Transactional
-	public List<Artist> actorsToAdd(Long movieId) {
-		List<Artist> actorsToAdd = new ArrayList<>();
-		for (Artist a : artistRepository.findActorsNotInMovie(movieId)) {
-			actorsToAdd.add(a);
-		}
-		return actorsToAdd;
-	}
 	
 	@Transactional
 	public void newImagesMovie(MultipartFile[] files, Movie movie) throws IOException {

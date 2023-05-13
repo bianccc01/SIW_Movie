@@ -2,11 +2,20 @@ body {
     font-family: "Geneva";
     color:dimgrey;
     font-size: 20px;
+    background-color:white;
+    margin: 0 auto;
+    text-align:center;
 }
 
 a { 
 	text-decoration: none; 
     color: darkgrey;
+}
+
+.siwimage{
+  position: absolute;
+        bottom: 20px;
+        left: 10px;
 }
 
 a:hover { 
@@ -20,12 +29,11 @@ label {
 
 header {
   background-color: rgb(98, 192, 144);
-  color: white;
-  height: 1.5em;
-  margin-bottom: 0.5em;
+  height: 60px;
   padding: 0.2em;
-  text-align: right; 
 }
+
+
 
 header a { 
 	text-decoration: none; 
@@ -34,8 +42,7 @@ header a {
 }
 
 input{
-	
-	font-size: 20px;
+  font-size: 20px;
 }
 
 
@@ -47,6 +54,105 @@ input{
 body {
 	font-size: 20px;
 }
+
+
+nav {
+  background-color: rgb(98, 192, 144);
+  color: white;
+  height: 100%;
+}
+
+nav ul{
+  
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin-left:0px;
+}
+
+
+
+nav ul ul{
+  display:none;
+  position: absolute;
+  top:100%;
+  left:0;
+  width:100%;
+  
+}
+
+
+nav ul li{
+  position: relative;
+  float: left;
+  text-align: center;
+  
+}
+
+
+nav ul li:hover ul{
+  display: block;
+ }
+
+nav ul li li {
+  
+  position: relative;
+  float: none;
+  width: 100%;
+  border: none;
+  
+}
+
+nav ul li a{
+  display:block;
+  text-decoration:none;
+  color: white;
+  padding:5px 10px;
+  font-size:1.2em;
+  box-sizing: border-box;
+  border-right: solid 1px black;
+  border-left: solid 1px black;
+  
+}
+
+
+
+nav ul ul li a{
+  font-size: 15px;
+  border-bottom: solid 2px black;
+}
+
+nav ul ul li:first-child a{
+  border-top: solid 2px black;
+  
+}
+
+nav ul li:hover a{
+  background: white;
+  color: black;
+  text-decoration:none;
+  transition: 0.5s;
+}
+
+nav ul li li:hover a{
+  background: rgb(98, 192, 144);
+  color: white;
+}
+
+li.login {
+  float:right;
+   position: relative;
+    left: 60em;
+}  
+
+
+
+
+
+
+
 
 
 

@@ -105,13 +105,13 @@ public class MovieController {
 		return "admin/manageMovies.html";
 	}
 	
-	@GetMapping("/admin/delMovieImage/{id}")
-	public String delMovieImage(@PathVariable("id") Long id, Model model) {
+	@GetMapping("/admin/delMovieImage/{idImage}/{idMovie}")
+	public String delMovieImage(@PathVariable("idImage") Long id, @PathVariable("idMovie") Long idMovie,  Model model) {
 		
 		this.imageRepository.delete(this.imageRepository.findById(id).get());
-		model.addAttribute("movies", this.movieRepository.findAll());
+		model.addAttribute("movie", this.movieRepository.findById(idMovie).get());
 	    
-		return "admin/manageMovies.html";
+		return "admin/formUpdateMovie.html";
 	}
 	
 	
@@ -120,7 +120,6 @@ public class MovieController {
 		
 		Movie movie = this.movieRepository.findById(id).get();
 		
-		this.imageRepository.deleteAll(movie.getImages());
 		this.movieService.newImagesMovie(files, movie);
 		this.imageRepository.saveAll(movie.getImages());
 		
@@ -141,7 +140,6 @@ public class MovieController {
 			
 			this.movieService.newImagesMovie(files, movie);
 			this.movieRepository.save(movie); 
-			this.imageRepository.saveAll(movie.getImages());
 			
 			model.addAttribute("movie", movie);
 			return "guest/movie.html";
@@ -206,7 +204,7 @@ public class MovieController {
 	@GetMapping("/admin/updateActors/{id}")
 	public String updateActors(@PathVariable("id") Long id, Model model) {
 
-		List<Artist> actorsToAdd = this.movieService.actorsToAdd(id);
+		List<Artist> actorsToAdd = actorsToAdd(id);
 		model.addAttribute("actorsToAdd", actorsToAdd);
 		model.addAttribute("movie", this.movieRepository.findById(id).get());
 
@@ -221,7 +219,7 @@ public class MovieController {
 		actors.add(actor);
 		this.movieRepository.save(movie);
 		
-		List<Artist> actorsToAdd = this.movieService.actorsToAdd(movieId);
+		List<Artist> actorsToAdd = actorsToAdd(movieId);
 		
 		model.addAttribute("movie", movie);
 		model.addAttribute("actorsToAdd", actorsToAdd);
@@ -237,12 +235,21 @@ public class MovieController {
 		actors.remove(actor);
 		this.movieRepository.save(movie);
 
-		List<Artist> actorsToAdd = this.movieService.actorsToAdd(movieId);
+		List<Artist> actorsToAdd = actorsToAdd(movieId);
 		
 		model.addAttribute("movie", movie);
 		model.addAttribute("actorsToAdd", actorsToAdd);
 
 		return "admin/actorsToAdd.html";
+	}
+	
+	@Transactional
+	public List<Artist> actorsToAdd(Long movieId) {
+		List<Artist> actorsToAdd = new ArrayList<>();
+		for (Artist a : artistRepository.findActorsNotInMovie(movieId)) {
+			actorsToAdd.add(a);
+		}
+		return actorsToAdd;
 	}
 
 	
