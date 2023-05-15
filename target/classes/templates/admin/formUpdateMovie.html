@@ -13,6 +13,7 @@
             <li>
                 <a href="/">Home</a>
             </li>
+          
             <li>
                 <a href="#">Operazioni Artisti</a>
                 <ul>
@@ -27,11 +28,49 @@
                     <li>
                         <a th:href="@{'/admin/updateActors/' + ${movie.id}}"> Modifica Attori</a>
                     </li>
-                </ul>
+                  
+                  </ul>
             </li>
+          
+          
             <li>
                 <a href="#">Operazioni film</a>
+              
+              <ul>
+                
+                <li>
+                  <a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}">Elimina Film </a>
+                </li>
+                
+                <li>
+                  <a href="#"> Modifica Titolo </a>
+                </li>
+                
+                 <li>
+                  <a href="#"> Modifica Anno </a>
+                </li>
+                
+                 <li>
+                   <a> Aggiungi immagini</a>
+                     <form th:action="@{/admin/addImageMovie/} + ${movie.id}" method="POST" enctype="multipart/form-data">
+                         <label for="file" class="Nascondi">Aggiungi immagini</label>
+                       <input type="file" id="file" name="file" multiple="multiple"/>
+                          
+                            </li>
+              </ul>
+              
+              <li>
+                <a>
+                 <button type="submit" class="add">Carica</button>
+                                </form>
+          </a>
+              </li>
             </li>
+          
+         
+            
+          
+          
             <li class = "login">
                 <div th:if="${#request.userPrincipal}">
 			<span th:text="${#request.userPrincipal.principal.username}"></span>
@@ -44,7 +83,7 @@
         </ul>
     </nav>
                     </header>
-                    <div>
+                    <div class = "siwimage">
                         <a href="/">
                             <img src="/images/logo-siw.png" width="50%"/>
                         </a>
@@ -60,20 +99,16 @@
                             <span>Regista: </span>
                             <span th:text="${movie.director.name} + ' ' + ${movie.director.surname}">Steven
 				Spielberg</span>
-                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
-                        </span>
                     </div>
                     <div th:unless="${movie.director}">
-                        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
-                    </div>
-                    <div>
+                        <span>Regista: </span>                    
+                      </div>
+                    
+                      <div>
                         <span>Attori: </span>
                         <div th:each="actor: ${movie.actors}">
                             <span th:text="${actor.name} + ' ' + ${actor.surname}"/>
                         </div>
-                        <a th:href="@{'/admin/updateActors/' + ${movie.id}}">
-                            <button type="button">Modifica</button>
-                        </a>
                         <div th:each="image : ${movie.images}">
                             <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
                             <a th:href="@{'/admin/delMovieImage' + '/' + ${image.id} + '/' + ${movie.id}}">
@@ -81,20 +116,15 @@
                             </span>
                         </a>
                     </div>
-                </div>
+                
+      </div>
                 <a th:href="@{'/admin/delMovie' + '/' + ${movie.id}}">
                     <button type="button">Elimina Film</button>
                 </span>
             </a>
         </div>
     </div>
-    <form th:action="@{/admin/addImageMovie/} + ${movie.id}" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="file">Aggiungi immagini:</label>
-            <input type="file" id="file" name="file" multiple="multiple"/>
-            <button type="submit">Carica</button>
-        </div>
-    </form>
+    
     <div th:unless="${movie}">Film non esistente</div>
 </body>
 </html>
