@@ -43,11 +43,11 @@
                 </li>
                 
                 <li>
-                  <a href="#"> Modifica Titolo </a>
+                  <a th:href="@{'/admin/changeMovieTitleForm' + '/' + ${movie.id}}"> Modifica Titolo </a>
                 </li>
                 
                  <li>
-                  <a href="#"> Modifica Anno </a>
+                   <a th:href="@{'/admin/changeMovieYearForm' + '/' + ${movie.id}}"> Modifica Anno </a>
                 </li>
                 
                  <li>

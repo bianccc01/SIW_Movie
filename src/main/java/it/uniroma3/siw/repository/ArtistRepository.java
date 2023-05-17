@@ -19,6 +19,8 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
 			+ "(select actors_id "
 			+ "from movie_actors "
 			+ "where movie_actors.starred_movies_id = :movieId)", nativeQuery=true)
+	
+	
 	public Iterable<Artist> findActorsNotInMovie(@Param("movieId") Long id);
 	
 	

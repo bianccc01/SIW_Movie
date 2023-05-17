@@ -27,19 +27,17 @@ import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.repository.ArtistRepository;
 import it.uniroma3.siw.repository.ImageRepository;
+import it.uniroma3.siw.service.ArtistService;
 import it.uniroma3.siw.service.CredentialsService;
 
 @Controller
 public class ArtistController {
 
-	@Autowired 
-	private ArtistRepository artistRepository;
+	@Autowired
+	private ArtistService artistService;
 
 	@Autowired
 	private ArtistValidator artistValidator;
-
-	@Autowired
-	private ImageRepository imageRepository;
 
 	@Autowired 
 	private CredentialsService credentialsService;
@@ -60,19 +58,9 @@ public class ArtistController {
 		this.artistValidator.validate(artist, bindingResult);
 		if(!bindingResult.hasErrors()) {
 
-			byte[] imageData = file.getBytes();
-			String imageName = file.getOriginalFilename();
+			this.artistService.newImagesArtist(file, artist);
 
-			Image image = new Image();
-			image.setName(imageName);
-			image.setBytes(imageData);
-
-
-			artist.addImage(image);
-
-
-			this.artistRepository.save(artist); 
-			this.imageRepository.save(image);
+			this.artistService.saveArtist(artist);
 			model.addAttribute("artist", artist);
 
 			return "guest/artist.html";
@@ -80,22 +68,16 @@ public class ArtistController {
 			return "admin/formNewArtist.html"; 
 		}
 	}
-	
-	@PostMapping("/guest/searchArtistName")
-	public String searchMoviesName(Model model, @RequestParam String title) {
-		
-		List<Artist> artists = new ArrayList<>();
-		artists.addAll(this.artistRepository.findByNameContainingIgnoreCase(title));
-		artists.addAll(this.artistRepository.findBySurnameContainingIgnoreCase(title));
-		List<Artist> uniqueArtists = artists.stream().distinct().collect(Collectors.toList());
-		model.addAttribute("artists", uniqueArtists);
 
+	@PostMapping("/guest/searchArtistName")
+	public String searchMoviesName(Model model, @RequestParam String s) {
+		model.addAttribute("artists", this.artistService.findArtistByNameAndSurname(s));
 		return "guest/artists.html";
 	}
 
 	@GetMapping("/guest/artist/{id}")
 	public String getArtist(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("artist", this.artistRepository.findById(id).get());
+		model.addAttribute("artist", this.artistService.findArtistById(id));
 		return "guest/artist.html";
 	}
 
@@ -117,8 +99,8 @@ public class ArtistController {
 			model.addAttribute("user", credentials.getUser());
 		}
 
-		model.addAttribute("artists", this.artistRepository.findAll());
-		
+		model.addAttribute("artists", this.artistService.allArtist());
+
 		return "guest/artists.html";
 	}
 }

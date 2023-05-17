@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>
+		Change Title
+	</title>
+	<link rel="stylesheet" href="/css/stile.css" />
+</head>
+
+<body>
+	<header>
+		<div th:if="${#request.userPrincipal}">
+			<span th:text="${#request.userPrincipal.principal.username}"></span>
+			<a href="/logout">Logout</a>
+		</div>
+		<div th:unless="${#request.userPrincipal}">
+			<a href="/login">Login</a>
+		</div>
+	</header>
+	
+	<a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+	<h1>Inserisci il nuovo titolo</h1>
+	<form th:action="@{/admin/changeMovieTitle/} + ${movie.id}" method="POST">
+		
+		<label>Titolo:</label> 
+			<input type="text" id="text" name="text"/>
+		
+		<div>
+			<span><button type="submit">Conferma</button></span>
+		</div>
+	</form>
+</body>
+
+</html>
