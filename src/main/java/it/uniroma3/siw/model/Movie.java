@@ -108,6 +108,12 @@ public class Movie {
 		return Objects.equals(title, other.title) && year.equals(other.year);
 	}
 	
+	public Image getImage(int i) {
+		if(this.images.get(i) == null)
+			return this.images.get(0);
+		else return this.images.get(i);
+	}
+	
 	 public void addImage(Image image) {
 	        images.add(image);
 	        image.setMovie(this);

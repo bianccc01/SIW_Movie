@@ -17,5 +17,6 @@ public class ImageService {
 	public void delImage(Long id) {
 		this.imageRepository.deleteById(id);
 	}
+	
 
 }

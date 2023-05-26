@@ -57,10 +57,12 @@ public class ArtistController {
 	public String newArtist(@Valid @ModelAttribute("artist") Artist artist, @RequestParam("file") MultipartFile file, BindingResult bindingResult, Model model) throws IOException {
 		this.artistValidator.validate(artist, bindingResult);
 		if(!bindingResult.hasErrors()) {
+			
+			this.artistService.saveArtist(artist);
 
 			this.artistService.newImagesArtist(file, artist);
 
-			this.artistService.saveArtist(artist);
+			
 			model.addAttribute("artist", artist);
 
 			return "guest/artist.html";

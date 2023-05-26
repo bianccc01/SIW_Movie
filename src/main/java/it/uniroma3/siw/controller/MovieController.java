@@ -110,25 +110,25 @@ public class MovieController {
 
 	@GetMapping("/admin/changeMovieTitleForm/{idMovie}")
 	public String changeMovieTitleForm(@PathVariable("idMovie") Long id,Model model) {
-		
+
 		model.addAttribute("movie",this.movieService.findMovieById(id));
 		return "admin/changeMovieTitleForm.html";
 	}
-	
-	
+
+
 	@PostMapping("/admin/changeMovieTitle/{id}")
 	public String changeMovieTitle(@PathVariable("id") Long id, @RequestParam("text") String title, Model model) {
 		model.addAttribute("movie",this.movieService.changeMovieTitle(id, title));
 		return "guest/movie.html";
 	}
-	
+
 	@GetMapping("/admin/changeMovieYearForm/{id}")
 	public String changeMovieYearForm(@PathVariable("id") Long id,Model model) {
-		
+
 		model.addAttribute("movie",this.movieService.findMovieById(id));
 		return "admin/changeMovieYearForm.html";
 	}
-	
+
 	@PostMapping("/admin/changeMovieYear/{id}")
 	public String changeMovieYear(@PathVariable("id") Long id, @RequestParam("text") Integer year, Model model) {
 		model.addAttribute("movie",this.movieService.changeMovieYear(id, year));
@@ -155,8 +155,8 @@ public class MovieController {
 
 		if (!bindingResult.hasErrors()) {
 
-			this.movieService.newImagesMovie(files, movie);
 			this.movieService.saveMovie(movie);
+			this.movieService.newImagesMovie(files, movie);
 
 			model.addAttribute("movie", movie);
 			return "guest/movie.html";
@@ -166,11 +166,22 @@ public class MovieController {
 		}
 	}
 
-	@GetMapping("/guest/movie/{id}")
-	public String getMovie(@PathVariable("id") Long id, Model model) {
+	@GetMapping("/guest/movie/{id}/{idImage}")
+	public String getMovie(@PathVariable("id") Long id, @PathVariable("idImage") int idImage, Model model) {
 
 		Movie movie = this.movieService.findMovieById(id);
 		model.addAttribute("movie", movie);
+
+		try {
+
+			model.addAttribute("image",movie.getImage(idImage));
+			model.addAttribute("id",idImage+1);
+		}
+
+		catch (IndexOutOfBoundsException e) {
+			model.addAttribute("image",movie.getImage(0));
+			model.addAttribute("id",1);
+		}
 
 		return "guest/movie.html";
 	}

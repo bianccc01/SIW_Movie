@@ -9,68 +9,55 @@
     <nav>
         <ul>
             <li>
-                <a href="#">Home</a>
+                <a href="/">Home</a>
             </li>
-            <li>
-                <a href="#">Operazioni Artisti</a>
-                <ul>
-                    <li>
-                        <div th:if="${movie.director}">
-                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
-                        </div>
-                        <div th:unless="${movie.director}">
-                            <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
-                        </div>
-                    </li>
-                    <li>
-                        <a th:href="@{'/admin/updateActors/' + ${movie.id}}"> Modifica Attori</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Operazioni film</a>
-            </li>
-            <li>
+            <li class="login">
                 <div th:if="${#request.userPrincipal}">
-			<a href="/logout">Logout</a>
-		</div>
-		
-		<div th:unless="${#request.userPrincipal}">
-			<a href="/login">Login</a>
-		</div>
+                    <span th:text="${#request.userPrincipal.principal.username}"/>
+                    <a href="/logout">Logout</a>
+                </div>
+                <div th:unless="${#request.userPrincipal}">
+                    <a href="/login">Login</a>
+                </div>
             </li>
         </ul>
     </nav>
 </header>
-<div class="siwimage">
-    <a href="/">
-        <img src="/images/logo-siw.png" width="50%"/>
-    </a>
-</div>
 
- <div>
-<h1>Aggiorna film</h1>
-<div th:if="${movie}">
-    <div>
-        <span th:text="${movie.title}">Titolo Film</span>
-        <span th:text="'(' + ${movie.year} + ')'">(Anno)</span>
+
+<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
+	<h1>Aggiungi un artista</h1>
+	<form th:action="@{/admin/artist}" method="POST" th:object="${artist}" enctype="multipart/form-data">
+		<div>
+			<span th:text="${messaggioErrore}">Errore</span>
+		</div>
+		
+		<div>
+			<label>Nome:</label> <span><input required type="text" th:field="${artist.name}" /></span>
+		</div>
+
+		<div>
+			<label>Cognome:</label> <span><input required type="text" th:field="${artist.surname}" /></span>
+		</div>
+
+		<div>
+			<label>Data di nascita:</label> <span><input type="date" th:field="${artist.dateOfBirth}" /></span>
+		</div>
+		
+		<div>
+			<label>Data di morte:</label> <span><input type="date" th:field="${artist.dateOfDeath}" /></span>
+		</div>
+
+		<div>
+        <label>Immagine:</label>
+         <input type="file" th:name="file"/>
+        </span>
     </div>
-    <div th:if="${movie.director}">
-        <span>Regista: </span>
-        <span th:text="${movie.director.name} + ' ' + ${movie.director.surname}">Steven Spielberg</span>
-        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Modifica regista</a>
-    </div>
-    <div th:unless="${movie.director}">
-        <a th:href="@{'/admin/addDirector/' + ${movie.id}}">Aggiungi regista</a>
-    </div>
-    <div>
-        <span>Attori: </span>
-        <div th:each="actor: ${movie.actors}">
-            <span th:text="${actor.name} + ' ' + ${actor.surname}"></span>
-        </div>
-        <a th:href="@{'/admin/updateActors/' + ${movie.id}}">
-            <button type="button">Modifica</button>
-        </a>
-        <div th:each="image : ${movie.images}">
-            <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
-            <a th:href="@{'/admin/delMovieImage'
+		
+		<div>
+			<span><button type="submit">Conferma</button></span>
+		</div>
+	</form>
+</body>
+
+</html>

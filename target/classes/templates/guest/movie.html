@@ -7,14 +7,23 @@
 
 <body>
 	<header>
-		<div th:if="${#request.userPrincipal}">
-			<span th:text="${#request.userPrincipal.principal.username}"></span>
-			<a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${#request.userPrincipal}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li class="login">
+                <div th:if="${#request.userPrincipal}">
+                    <span th:text="${#request.userPrincipal.principal.username}"/>
+                    <a href="/logout">Logout</a>
+                </div>
+                <div th:unless="${#request.userPrincipal}">
+                    <a href="/login">Login</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
 
 	<a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Dettagli Film</h1>
@@ -23,11 +32,13 @@
         <span th:text="'(' + ${movie.year} + ')'">2000</span>
         
   <div>
-     <span th:each="image : ${movie.images}">
+	 <span>
   	<img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
-	</span> 
+  	<a th:href="@{'/guest/movie' + '/' + ${movie.id} + '/' + ${id}}">
+    <button>Change</button>
+  </a> 
+	</span>
 </div>
-
 
 
 </div>

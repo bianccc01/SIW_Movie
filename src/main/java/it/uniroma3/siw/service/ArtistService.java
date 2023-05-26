@@ -50,9 +50,9 @@ public class ArtistService {
 		image.setName(imageName);
 		image.setBytes(imageData);
 
-
-		artist.addImage(image);
 		this.imageRepository.save(image);
+		artist.addImage(image);
+		
 	}
 	
 	@Transactional

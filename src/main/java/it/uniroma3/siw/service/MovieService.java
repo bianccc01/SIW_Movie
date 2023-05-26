@@ -113,6 +113,11 @@ public class MovieService {
 		}
 		return actorsToAdd;
 	}
+	
+	public boolean foundImage(Movie movie, int id) {
+		return movie.getImage(id) != null;
+		
+	}
 
 	
 	

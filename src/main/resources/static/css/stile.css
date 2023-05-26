@@ -179,6 +179,10 @@ li.login {
 
 } 
 
+ul {
+list-style-type: none;
+}
+
 
 li.login > div {
     display: flex;

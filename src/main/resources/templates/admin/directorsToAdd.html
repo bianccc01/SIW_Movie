@@ -8,14 +8,23 @@
 
 <body>
 	<header>
-		<div th:if="${#request.userPrincipal}">
-			<span th:text="${#request.userPrincipal.principal.username}"></span>
-			<a href="/logout">Logout</a>
-		</div>
-		<div th:unless="${#request.userPrincipal}">
-			<a href="/login">Login</a>
-		</div>
-	</header>
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li class="login">
+                <div th:if="${#request.userPrincipal}">
+                    <span th:text="${#request.userPrincipal.principal.username}"/>
+                    <a href="/logout">Logout</a>
+                </div>
+                <div th:unless="${#request.userPrincipal}">
+                    <a href="/login">Login</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
 
 	<div><a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
 	<h1 th:text="'Regista per il film ' + ${movie.title}"></h1>
