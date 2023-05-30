@@ -116,6 +116,22 @@ public class MovieService {
 	
 	public boolean foundImage(Movie movie, int id) {
 		return movie.getImage(id) != null;
+	}
+	
+	public Image getImageMovie(Movie movie, int idImage) {
+		
+		if(idImage < 0) {
+			return movie.getImage(movie.getImages().size()-1);
+		}
+		
+		else try {
+
+			return movie.getImage(idImage);
+		}
+
+		catch (IndexOutOfBoundsException e) {
+			return movie.getImage(0);
+		}
 		
 	}
 

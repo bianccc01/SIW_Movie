@@ -172,8 +172,8 @@ nav ul li li:hover a{
 li.login {
    float:right;
    position: relative;
-   left: 65em;
-   width: 20%;
+   left:  30%;
+   width: 10%;
    display: flex;
    align-items: center;
 
@@ -193,3 +193,71 @@ li.login span {
     white-space: nowrap;
     margin-right: 10px; 
 }
+
+.centered-box {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 10%; 
+}
+
+.textMovie{
+  font-size: 30px;
+  color:black;
+  font-weight: bold;
+}
+
+.image-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background-color: #f0f0f0;
+  border: 1px solid black;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+ max-width:100%;
+}
+
+
+.arrow {
+  font-size: 40px;
+  color: black;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.arrow:hover {
+  color: green;
+}
+
+.arrow.left {
+  left: 5px;
+}
+
+.arrow.right {
+  right: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -27,18 +27,25 @@
 
 	<a href="/"><img src="/images/logo-siw.png" width="50%"/></a></div>
     <h1>Dettagli Film</h1>
-    <div th:if="${movie}">
+   <div class = "textMovie" th:if="${movie}">
         <span th:text="${movie.title}">Up!</span>
         <span th:text="'(' + ${movie.year} + ')'">2000</span>
+   
         
-  <div>
-	 <span>
-  	<img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
-  	<a th:href="@{'/guest/movie' + '/' + ${movie.id} + '/' + ${id}}">
-    <button>Change</button>
-  </a> 
-	</span>
+<div class="centered-box">
+   <div class="image-container">
+    <a th:href="@{'/guest/movie' + '/' + ${movie.id} + '/' + ${id-1}}">
+      <span class="arrow left">&#9664;</span>
+    </a>
+    <img th:src="@{'data:image/png;base64,' + ${image.base64Image}}" style="width: 300px"/>
+    <a th:href="@{'/guest/movie' + '/' + ${movie.id} + '/' + ${id+1}}">
+      <span class="arrow right">&#9654;</span>
+    </a>
+  </div>
 </div>
+
+
+
 
 
 </div>

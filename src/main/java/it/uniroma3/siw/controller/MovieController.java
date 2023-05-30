@@ -172,16 +172,10 @@ public class MovieController {
 		Movie movie = this.movieService.findMovieById(id);
 		model.addAttribute("movie", movie);
 
-		try {
-
-			model.addAttribute("image",movie.getImage(idImage));
-			model.addAttribute("id",idImage+1);
-		}
-
-		catch (IndexOutOfBoundsException e) {
-			model.addAttribute("image",movie.getImage(0));
-			model.addAttribute("id",1);
-		}
+		Image image = this.movieService.getImageMovie(movie, idImage);
+		
+		model.addAttribute("image",image);
+		model.addAttribute("id",movie.getImages().indexOf(image));
 
 		return "guest/movie.html";
 	}
